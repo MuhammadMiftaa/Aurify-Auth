@@ -223,6 +223,9 @@ export class AuthService {
             provider: true,
             providerUserId: true,
           },
+          where: {
+            provider: 'local',
+          },
         },
         createdAt: true,
         deletedAt: true,
@@ -253,7 +256,7 @@ export class AuthService {
     const token = this.jwtService.sign({
       id: user.id,
       email: user.email,
-      userAuthProvider: user.userAuthProvider,
+      userAuthProvider: user.userAuthProvider[0],
     });
 
     return { token };
@@ -460,11 +463,17 @@ export class AuthService {
           },
         });
 
-        const userAuthProvider = await tx.userAuthProvider.create({
-          data: {
+        const userAuthProvider = await tx.userAuthProvider.findFirst({
+          where: {
             provider: 'local',
             providerUserId: userUpdated.id,
             userId: userUpdated.id,
+          },
+          select: {
+            id: true,
+            provider: true,
+            providerUserId: true,
+            userId: true,
           },
         });
 
@@ -485,8 +494,8 @@ export class AuthService {
       id: userUpdated.id,
       email: userUpdated.email,
       userAuthProvider: {
-        provider: userAuthProvider.provider,
-        providerUserId: userAuthProvider.providerUserId,
+        provider: userAuthProvider?.provider,
+        providerUserId: userAuthProvider?.providerUserId,
       },
     });
 

@@ -116,7 +116,7 @@ export class AuthController {
     const res = await this.authService.oauthLoginCallback(req.user);
 
     return {
-      url: `${this.configService.get<string>('REDIRECT_URL')}#token=${res.token}`,
+      url: `${this.configService.get<string>('REDIRECT_URL')}#aurify_token=${res.token}`,
       statusCode: 302,
     };
   }
@@ -136,7 +136,7 @@ export class AuthController {
     const res = await this.authService.oauthLoginCallback(req.user);
 
     return {
-      url: `${this.configService.get<string>('REDIRECT_URL')}#token=${res.token}`,
+      url: `${this.configService.get<string>('REDIRECT_URL')}#aurify_token=${res.token}`,
       statusCode: 302,
     };
   }
@@ -156,7 +156,7 @@ export class AuthController {
     const res = await this.authService.oauthLoginCallback(req.user);
 
     return {
-      url: `${this.configService.get<string>('REDIRECT_URL')}#token=${res.token}`,
+      url: `${this.configService.get<string>('REDIRECT_URL')}#aurify_token=${res.token}`,
       statusCode: 302,
     };
   }
