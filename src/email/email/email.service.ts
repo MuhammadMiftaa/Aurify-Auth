@@ -67,7 +67,7 @@ export class EmailService {
   private readTemplate(templateName: string): string {
     const templatePath = path.join(
       process.cwd(),
-      'src',
+      ...(process.env.NODE_ENV === 'production' ? ['dist', 'src'] : ['src']),
       'email',
       'templates',
       `${templateName}.html`,

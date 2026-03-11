@@ -3,505 +3,439 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kode Verifikasi - Refina</title>
+    <title>Kode Verifikasi - Aurify</title>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
-    </style>
-    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap");
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
         padding: 0;
-        font-family: "Montserrat", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f8fafc;
+        font-family: "Manrope", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #0a0a0a;
         line-height: 1.6;
+        color: #e5e5e5;
+      }
+
+      .email-wrapper {
+        background-color: #0a0a0a;
+        padding: 32px 16px;
       }
 
       .email-container {
-        /* max-width: 600px; */
+        max-width: 600px;
         margin: 0 auto;
-        background-color: #ffffff;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background-color: #111111;
+        border: 1px solid rgba(218, 165, 32, 0.15);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 0 60px rgba(218, 165, 32, 0.05), 0 20px 60px rgba(0,0,0,0.6);
       }
 
+      /* ── Header ── */
       .header {
-        background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
-        padding: 30px 20px;
+        background: linear-gradient(160deg, #111111 0%, #1a1500 60%, #0f0f00 100%);
+        padding: 40px 32px 36px;
         text-align: center;
-        color: white;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(218, 165, 32, 0.2);
       }
 
-      .logo {
-        margin: 0 auto;
-        padding: 10px 10px 3px 10px;
-        width: fit-content;
-        height: fit-content;
-        background-color: white;
-        border-radius: 12px;
+      .header::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(218, 165, 32, 0.12) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .logo-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 4px;
+      }
+
+      .logo-icon {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, #8b4513 0%, #daa520 50%, #ffd700 100%);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        box-shadow: 0 0 20px rgba(218, 165, 32, 0.4);
       }
 
       .company-name {
-        font-size: 28px;
-        font-weight: bold;
+        font-family: "Cormorant", Georgia, serif;
+        font-size: 32px;
+        font-weight: 700;
         margin: 0;
-        letter-spacing: 1px;
+        letter-spacing: 2px;
+        background: linear-gradient(135deg, #8b4513 0%, #daa520 30%, #ffd700 50%, #f5deb3 70%, #daa520 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       .tagline {
-        font-size: 14px;
-        opacity: 0.9;
-        margin: 5px 0 0 0;
+        font-size: 11px;
+        color: #737373;
+        margin: 8px 0 0 0;
+        letter-spacing: 2px;
+        text-transform: uppercase;
       }
 
+      /* ── Content ── */
       .content {
-        padding: 40px 30px;
+        padding: 36px 32px;
       }
 
-      .intro {
-        background-color: #eff6ff;
-        border-left: 4px solid #3b82f6;
-        padding: 20px;
-        margin: 20px 0;
-        border-radius: 0 8px 8px 0;
+      .greeting {
+        font-size: 15px;
+        color: #a3a3a3;
+        margin: 0 0 24px 0;
       }
 
-      .intro h3 {
-        color: #1e40af;
-        margin: 0 0 10px 0;
-        font-size: 16px;
+      .greeting strong {
+        color: #e5e5e5;
       }
 
-      .intro p {
-        color: #374151;
-        margin: 0;
-        font-size: 14px;
-      }
-
+      /* ── OTP Section ── */
       .otp-section {
         text-align: center;
-        margin: 30px 0;
-        padding: 30px;
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        margin: 28px 0;
+        padding: 32px 24px;
+        background: linear-gradient(135deg, rgba(218, 165, 32, 0.06) 0%, rgba(255, 215, 0, 0.03) 50%, rgba(218, 165, 32, 0.05) 100%);
         border-radius: 12px;
-        border: 2px dashed #3b82f6;
+        border: 1px solid rgba(218, 165, 32, 0.25);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .otp-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #daa520, #ffd700, #daa520, transparent);
       }
 
       .otp-label {
-        font-size: 16px;
-        color: #1e40af;
+        font-size: 11px;
+        color: #737373;
         font-weight: 600;
-        margin-bottom: 15px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
       }
 
       .otp-code {
-        font-size: 36px;
-        font-weight: bold;
-        color: #1e40af;
-        letter-spacing: 8px;
-        margin: 15px 0;
-        padding: 15px 30px;
-        background-color: white;
-        border-radius: 8px;
-        border: 2px solid #3b82f6;
+        font-size: 40px;
+        font-weight: 800;
+        letter-spacing: 10px;
+        margin: 8px 0 16px;
+        padding: 16px 28px;
+        background-color: #0a0a0a;
+        border-radius: 10px;
+        border: 1px solid rgba(218, 165, 32, 0.3);
         display: inline-block;
-        font-family: "Courier New", monospace;
+        font-family: "Manrope", monospace;
+        background: linear-gradient(135deg, #8b4513 0%, #daa520 30%, #ffd700 50%, #f5deb3 70%, #daa520 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+      }
+
+      .otp-code-wrap {
+        display: inline-block;
+        background-color: #0a0a0a;
+        border-radius: 10px;
+        border: 1px solid rgba(218, 165, 32, 0.3);
+        padding: 14px 28px;
+        margin: 8px 0 16px;
+        box-shadow: 0 0 24px rgba(218, 165, 32, 0.08), inset 0 1px 0 rgba(255,215,0,0.06);
       }
 
       .otp-validity {
-        font-size: 14px;
+        font-size: 12px;
         color: #ef4444;
         font-weight: 500;
-        margin-top: 10px;
+        margin-top: 4px;
+        opacity: 0.85;
       }
 
+      /* ── Divider ── */
+      .gold-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(218, 165, 32, 0.3), transparent);
+        margin: 28px 0;
+      }
+
+      /* ── Instructions ── */
       .instructions {
-        background-color: #f9fafb;
-        padding: 25px;
-        border-radius: 8px;
-        margin: 25px 0;
+        background-color: #161616;
+        padding: 22px 24px;
+        border-radius: 10px;
+        margin: 24px 0;
+        border: 1px solid rgba(255,255,255,0.05);
       }
 
       .instructions h4 {
-        color: #1f2937;
-        margin: 0 0 15px 0;
-        font-size: 16px;
+        color: #e5e5e5;
+        margin: 0 0 14px 0;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
       }
 
       .instructions ol {
-        color: #4b5563;
+        color: #737373;
         margin: 0;
-        padding-left: 20px;
+        padding-left: 18px;
       }
 
       .instructions li {
-        margin-bottom: 8px;
-        font-size: 14px;
+        margin-bottom: 7px;
+        font-size: 13px;
+        color: #a3a3a3;
+        line-height: 1.6;
       }
 
+      .instructions li::marker {
+        color: #daa520;
+      }
+
+      /* ── Security Warning ── */
       .security-warning {
-        background-color: #fef2f2;
-        border: 1px solid #fecaca;
-        border-radius: 8px;
-        padding: 20px;
-        margin: 25px 0;
+        background-color: rgba(220, 38, 38, 0.06);
+        border: 1px solid rgba(220, 38, 38, 0.2);
+        border-radius: 10px;
+        padding: 18px 20px;
+        margin: 24px 0;
       }
 
       .security-warning h4 {
-        color: #dc2626;
-        margin: 0 0 10px 0;
-        font-size: 15px;
+        color: #f87171;
+        margin: 0 0 8px 0;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
         display: flex;
         align-items: center;
+        gap: 6px;
       }
 
       .security-warning p {
-        color: #7f1d1d;
+        color: #a3a3a3;
         margin: 0;
-        font-size: 13px;
-      }
-
-      .warning-icon {
-        margin-right: 8px;
-        font-size: 16px;
-      }
-
-      .support-section {
-        text-align: center;
-        margin: 30px 0;
-        padding: 20px;
-        background-color: #f8fafc;
-        border-radius: 8px;
-      }
-
-      .support-section p {
-        color: #6b7280;
-        margin: 0 0 10px 0;
-        font-size: 14px;
-      }
-
-      .support-email {
-        color: #3b82f6;
-        text-decoration: none;
-        font-weight: 500;
-      }
-
-      .footer {
-        background-color: #1f2937;
-        color: #9ca3af;
-        padding: 30px 20px;
-        text-align: center;
         font-size: 12px;
+        line-height: 1.7;
       }
 
-      .footer p {
-        margin: 5px 0;
+      /* ── Sign-off ── */
+      .signoff {
+        color: #737373;
+        font-size: 13px;
+        margin: 28px 0 0 0;
+      }
+
+      .signoff strong {
+        color: #daa520;
+        font-weight: 700;
+      }
+
+      /* ── Footer ── */
+      .footer {
+        background-color: #0a0a0a;
+        border-top: 1px solid rgba(218, 165, 32, 0.1);
+        padding: 28px 32px;
+        text-align: center;
+      }
+
+      .footer-brand {
+        font-family: "Cormorant", Georgia, serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        background: linear-gradient(135deg, #daa520, #ffd700);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0 0 4px 0;
+      }
+
+      .footer-sub {
+        color: #404040;
+        font-size: 11px;
+        margin: 0 0 16px 0;
       }
 
       .footer-links {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 15px;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-bottom: 8px;
       }
 
       .footer-links a {
-        color: #60a5fa;
+        color: #525252;
         text-decoration: none;
-        margin: 0 10px;
+        font-size: 11px;
+        transition: color 0.2s;
+        padding: 0 6px;
       }
 
-      .social-links {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 15px;
+      .footer-links .sep {
+        color: rgba(218, 165, 32, 0.2);
+        font-size: 11px;
       }
 
-      .social-links a {
-        display: inline-block;
-        margin: 0 8px;
-        color: #60a5fa;
-        text-decoration: none;
+      .footer-copy {
+        color: #2a2a2a;
+        font-size: 11px;
+        margin: 12px 0 4px;
       }
 
-      /* Tablet and small desktop */
-      @media only screen and (max-width: 768px) {
+      .footer-auto {
+        color: #2a2a2a;
+        font-size: 10px;
+        margin: 0;
+        opacity: 0.6;
+      }
+
+      /* ── Responsive ── */
+      @media only screen and (max-width: 600px) {
+        .email-wrapper {
+          padding: 0;
+        }
+        .email-container {
+          border-radius: 0;
+          border-left: none;
+          border-right: none;
+        }
         .content {
-          padding: 35px 25px;
+          padding: 28px 20px;
         }
-
-        .otp-code {
-          font-size: 32px;
-          letter-spacing: 6px;
-          padding: 14px 25px;
-        }
-
         .header {
-          padding: 28px 18px;
+          padding: 32px 20px 28px;
         }
-
         .company-name {
           font-size: 26px;
         }
+        .otp-code {
+          font-size: 30px;
+          letter-spacing: 6px;
+        }
+        .otp-code-wrap {
+          padding: 12px 20px;
+        }
+        .footer {
+          padding: 24px 20px;
+        }
       }
 
-      /* Mobile phones */
-      @media only screen and (max-width: 600px) {
-        .email-container {
-          margin: 0;
-          box-shadow: none;
-        }
-
-        .content {
-          padding: 25px 15px;
-        }
-
-        .header {
-          padding: 20px 15px;
-        }
-
-        .company-name {
-          font-size: 22px;
-        }
-
-        .tagline {
-          font-size: 12px;
-        }
-
-        .intro {
-          padding: 15px;
-          margin: 15px 0;
-        }
-
-        .intro h3 {
-          font-size: 15px;
-        }
-
-        .intro p {
-          font-size: 13px;
-        }
-
-        .otp-section {
-          padding: 20px 10px;
-          margin: 20px 0;
-        }
-
-        .otp-label {
-          font-size: 14px;
-        }
-
+      @media only screen and (max-width: 400px) {
         .otp-code {
           font-size: 24px;
-          letter-spacing: 3px;
-          padding: 10px 15px;
-          margin: 10px 0;
+          letter-spacing: 4px;
         }
-
-        .otp-validity {
-          font-size: 12px;
-        }
-
-        .instructions {
-          padding: 18px;
-          margin: 20px 0;
-        }
-
-        .instructions h4 {
-          font-size: 14px;
-        }
-
-        .instructions li {
-          font-size: 13px;
-          margin-bottom: 6px;
-        }
-
-        .security-warning {
-          padding: 15px;
-          margin: 20px 0;
-        }
-
-        .security-warning h4 {
-          font-size: 14px;
-        }
-
-        .security-warning p {
-          font-size: 12px;
-          line-height: 1.5;
-        }
-
-        .support-section {
-          padding: 15px;
-          margin: 20px 0;
-        }
-
-        .support-section p {
-          font-size: 13px;
-        }
-
-        .footer {
-          padding: 20px 15px;
-          font-size: 11px;
-        }
-
-        .footer-links a {
-          margin: 0 5px;
-          display: inline-block;
-          margin-bottom: 5px;
-        }
-
-        .social-links a {
-          margin: 0 5px;
-          display: inline-block;
-          margin-bottom: 5px;
-        }
-      }
-
-      /* Very small mobile phones */
-      @media only screen and (max-width: 480px) {
-        .content {
-          padding: 20px 12px;
-        }
-
-        .otp-code {
-          font-size: 20px;
-          letter-spacing: 2px;
-          padding: 8px 12px;
-        }
-
         .company-name {
-          font-size: 20px;
-        }
-
-        .image {
-          width: 50px;
-          height: 50px;
-        }
-
-        .instructions ol {
-          padding-left: 15px;
-        }
-
-        .footer-links a,
-        .social-links a {
-          display: block;
-          margin: 5px 0;
-        }
-      }
-
-      /* Large screens */
-      @media only screen and (min-width: 1200px) {
-        .email-container {
-          margin: 0 auto;
+          font-size: 22px;
         }
       }
     </style>
   </head>
   <body>
-    <div class="email-container">
-      <!-- Header -->
-      <div class="header">
-        <div class="logo">
-          <img
-            width="50"
-            height="50"
-            src="data:image/png;base64,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"
-          />
-        </div>
-        <h1 class="company-name">REFINA</h1>
-      </div>
+    <div class="email-wrapper">
+      <div class="email-container">
 
-      <!-- Content -->
-      <div class="content">
-        <!-- Introduction -->
-        <div class="intro">
-          <h3>Welcome to Refina!</h3>
-          <p>
-            Refina is a financial management platform that helps you manage your
-            personal and business finances more easily, securely, and
-            efficiently. We provide a complete set of tools for budgeting,
-            expense tracking, and financial analysis.
+        <!-- Header -->
+        <div class="header">
+          <!-- <div class="logo-wrap">
+            <div class="logo-icon">✦</div>
+          </div> -->
+          <h1 class="company-name">AURIFY</h1>
+          <p class="tagline">Financial Management</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+
+          <p class="greeting">
+            Hello, thank you for registering with <strong>Aurify</strong>. Use the verification code below to continue your account setup.
+          </p>
+
+          <!-- OTP Section -->
+          <div class="otp-section">
+            <div class="otp-label">Your Verification Code</div>
+            <div class="otp-code-wrap">
+              <div class="otp-code">{{OTP}}</div>
+            </div>
+            <div class="otp-validity">⏰ Valid for {{OTP_EXPIRATION}} minutes only</div>
+          </div>
+
+          <div class="gold-divider"></div>
+
+          <!-- Instructions -->
+          <div class="instructions">
+            <h4>How to use</h4>
+            <ol>
+              <li>Return to the Aurify registration page</li>
+              <li>Enter the 6-digit code above</li>
+              <li>Click <strong style="color:#daa520">Verify</strong> to continue</li>
+              <li>Complete your profile and start managing your finances</li>
+            </ol>
+          </div>
+
+          <!-- Security Warning -->
+          <div class="security-warning">
+            <h4>🔒 Security Notice</h4>
+            <p>
+              Never share this code with anyone — including the Aurify team. This code is single-use only. If you did not initiate this request, you may safely ignore this email.
+            </p>
+          </div>
+
+          <p class="signoff">
+            Warm regards,<br />
+            <strong>The Aurify Team</strong>
           </p>
         </div>
 
-        <p>
-          Thank you for registering with Refina! To continue your account
-          registration process, please use the One Time Password (OTP)
-          verification code below:
-        </p>
+        <!-- Footer -->
+        <div class="footer">
+          <p class="footer-brand">AURIFY</p>
+          <p class="footer-sub">Surabaya, East Java, Indonesia</p>
 
-        <!-- OTP Section -->
-        <div class="otp-section">
-          <div class="otp-label">Your Verification Code:</div>
-          <div class="otp-code">{{OTP}}</div>
-          <div class="otp-validity">⏰ Code is valid for {{OTP_EXPIRATION}} minutes</div>
+          <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <span class="sep">·</span>
+            <a href="#">Terms &amp; Conditions</a>
+            <span class="sep">·</span>
+            <a href="#">Help</a>
+          </div>
+
+          <p class="footer-copy">© 2025 Aurify. All rights reserved.</p>
+          <p class="footer-auto">This is an automated email — please do not reply.</p>
         </div>
 
-        <!-- Instructions -->
-        <div class="instructions">
-          <h4>📋 How to use the verification code:</h4>
-          <ol>
-            <li>Return to the Refina registration page</li>
-            <li>Enter the 6-digit verification code above</li>
-            <li>Click the "Verify" button to continue</li>
-            <li>Complete your account profile</li>
-            <li>Start managing your finances with Refina!</li>
-          </ol>
-        </div>
-
-        <!-- Security Warning -->
-        <div class="security-warning">
-          <h4>
-            <span class="warning-icon">🔒</span>Important for Your Security:
-          </h4>
-          <p>
-            • Do not share this code with anyone, including the Refina team<br />
-            • This code is valid for one-time use only<br />
-            • If you did not initiate this registration, please ignore this
-            email<br />
-            • Contact us immediately if you notice any suspicious activity
-          </p>
-        </div>
-
-        <p>
-          If the code above doesn't work or has expired, you can request a new
-          verification code via the registration page.
-        </p>
-
-        <!-- Support Section -->
-        <div class="support-section">
-          <p>
-            Need help? Our customer service team is ready to assist you 24/7
-          </p>
-          <a href="mailto:support@refina.com" class="support-email"
-            >support@refina.com</a
-          >
-        </div>
-
-        <p style="color: #6b7280; font-size: 14px; margin-top: 30px">
-          Warm regards,<br />
-          <strong style="color: #1f2937">Refina Team</strong>
-        </p>
-      </div>
-
-      <!-- Footer -->
-      <div class="footer">
-        <p><strong>Rekapan Finansialmu | Refina</strong></p>
-        <p>Surabaya, East Java, Indonesia</p>
-
-        <div class="footer-links">
-          <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a> |
-          <a href="#">Help</a>
-        </div>
-
-        <div class="social-links">
-          <a href="#">Facebook</a> | <a href="#">Twitter</a> |
-          <a href="#">Instagram</a> |
-          <a href="#">LinkedIn</a>
-        </div>
-
-        <p>© 2025 Refina. All rights reserved.</p>
-        <p style="font-size: 11px; opacity: 0.7">
-          This email was sent automatically, please do not reply to this email.
-        </p>
       </div>
     </div>
   </body>
