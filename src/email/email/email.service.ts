@@ -65,6 +65,7 @@ export class EmailService {
 
   // Method untuk membaca template HTML
   private readTemplate(templateName: string): string {
+    this.logger.debug("Env Mode: ", process.env.NODE_ENV)
     const templatePath = path.join(
       process.cwd(),
       ...(process.env.NODE_ENV === 'production' ? ['dist', 'src'] : ['src']),
