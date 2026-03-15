@@ -70,7 +70,7 @@ sonarcloud-check:
     - if: $CI_COMMIT_TAG =~ /^v[0-9]{4}\.[0-9]{1,3}$/
   allow_failure: true
 
-build_refina_auth:
+build-refina-auth:
   stage: build
   image: docker:latest
   services:
@@ -88,7 +88,7 @@ build_refina_auth:
     paths:
       - refina-auth_build_job_id.txt
 
-build_migrate:
+build-migrate:
   stage: build
   image: docker:latest
   services:
@@ -110,7 +110,7 @@ release:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   needs:
-    - job: build_refina_auth
+    - job: build-refina-auth
       artifacts: true
   rules:
     - if: $CI_COMMIT_TAG =~ /^v[0-9]{4}\.[0-9]{1,3}$/
@@ -179,7 +179,7 @@ migrate-staging:
   stage: migrate
   image: alpine:latest
   needs:
-    - job: build_migrate
+    - job: build-migrate
       artifacts: true
     - job: deploy-staging
   rules:
@@ -214,7 +214,7 @@ migrate-production:
   stage: migrate
   image: alpine:latest
   needs:
-    - job: build_migrate
+    - job: build-migrate
       artifacts: true
     - job: deploy-production
   rules:
