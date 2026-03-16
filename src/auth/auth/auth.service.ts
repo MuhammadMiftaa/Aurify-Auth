@@ -14,7 +14,7 @@ import {
 import bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { EmailService } from 'src/email/email/email.service';
-import { Logger } from 'winston';
+import { log, Logger } from 'winston';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { SetPasswordRequest } from 'src/model/set-password.model';
 
@@ -348,7 +348,8 @@ export class AuthService {
       email: user.email,
       userAuthProvider:
         userAuthProvider || // $ If user has linked their account with the OAuth provider
-        user.userAuthProvider.find( // $ If user recently create account with the OAuth provider
+        user.userAuthProvider.find(
+          // $ If user recently create account with the OAuth provider
           (auth) => auth.provider === oauthUser.provider,
         ),
     });
@@ -463,12 +464,20 @@ export class AuthService {
           },
         });
 
-        const userAuthProvider = await tx.userAuthProvider.findFirst({
+        const userAuthProvider = await tx.userAuthProvider.upsert({
           where: {
+            userId: userUpdated.id,
+            provider_providerUserId: {
+              provider: 'local',
+              providerUserId: userUpdated.id,
+            },
+          },
+          create: {
             provider: 'local',
             providerUserId: userUpdated.id,
             userId: userUpdated.id,
           },
+          update: {},
           select: {
             id: true,
             provider: true,

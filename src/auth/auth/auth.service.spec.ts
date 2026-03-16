@@ -558,7 +558,7 @@ describe('AuthService', () => {
               }),
             },
             userAuthProvider: {
-              findFirst: jest.fn().mockResolvedValue({
+              upsert: jest.fn().mockResolvedValue({
                 id: 'provider-id',
                 provider: 'local',
                 providerUserId: 'user-id',
