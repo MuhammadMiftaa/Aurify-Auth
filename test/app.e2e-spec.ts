@@ -13,6 +13,7 @@ import { ValidationService } from './../src/validation/validation/validation.ser
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { ProfileGrpcService } from './../src/grpc/profile/profile-grpc.service';
 
 // ─── Mock Factories ──────────────────────────────────────────────────────────
 
@@ -56,6 +57,17 @@ const mockConfigService = {
   get: jest.fn().mockReturnValue('http://localhost:5173'),
 };
 
+const mockProfileGrpcService = {
+  createProfile: jest.fn().mockResolvedValue({
+    id: 'profile-id',
+    user_id: 'user-id',
+    fullname: 'Test User',
+    photo_url: '',
+    created_at: '',
+    updated_at: '',
+  }),
+};
+
 describe('App (e2e)', () => {
   let app: INestApplication<App>;
 
@@ -70,6 +82,7 @@ describe('App (e2e)', () => {
         { provide: JwtService, useValue: mockJwtService },
         { provide: EmailService, useValue: mockEmailService },
         { provide: ConfigService, useValue: mockConfigService },
+        { provide: ProfileGrpcService, useValue: mockProfileGrpcService },
         { provide: WINSTON_MODULE_PROVIDER, useValue: mockLogger },
       ],
     }).compile();
@@ -208,6 +221,77 @@ describe('App (e2e)', () => {
   });
 
   // ═══════════════════════════════════════════════════════════════════════════
+  // POST /auth/complete-profile
+  // ═══════════════════════════════════════════════════════════════════════════
+  describe('POST /auth/complete-profile', () => {
+    it('should complete profile and return JWT token', async () => {
+      mockPrismaService.oTP.findFirst.mockResolvedValue({
+        id: 'otp-id',
+        email: 'test@example.com',
+        status: 'verified',
+        expiresAt: new Date(Date.now() + 300000),
+      });
+      mockPrismaService.user.findUnique.mockResolvedValue(null);
+      mockPrismaService.$transaction.mockImplementation(async (cb) => {
+        if (typeof cb === 'function') {
+          const tx = {
+            user: {
+              create: jest.fn().mockResolvedValue({
+                id: 'user-id',
+                name: 'Test User',
+                email: 'test@example.com',
+              }),
+            },
+            userAuthProvider: { create: jest.fn().mockResolvedValue({}) },
+            oTP: { update: jest.fn().mockResolvedValue({}) },
+          };
+          return cb(tx);
+        }
+      });
+
+      const res = await request(app.getHttpServer())
+        .post('/auth/complete-profile?tempToken=valid-token')
+        .send({
+          name: 'Test User',
+          password: 'password123',
+          confirmPassword: 'password123',
+        })
+        .expect(201);
+
+      expect(res.body.status).toBe(true);
+      expect(res.body.message).toBe('Profile completed successfully');
+      expect(res.body.data).toHaveProperty('token');
+    });
+
+    it('should return 400 for missing tempToken', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/auth/complete-profile')
+        .send({
+          name: 'Test User',
+          password: 'password123',
+          confirmPassword: 'password123',
+        })
+        .expect(400);
+
+      expect(res.body.message).toBe('Invalid temp token');
+    });
+
+    it('should return 400 for password mismatch', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/auth/complete-profile?tempToken=some-token')
+        .send({
+          name: 'Test User',
+          password: 'password123',
+          confirmPassword: 'different',
+        })
+        .expect(400);
+
+      expect(res.body.status).toBe(false);
+      expect(res.body.message).toBe('Validation failed');
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // POST /auth/login
   // ═══════════════════════════════════════════════════════════════════════════
   describe('POST /auth/login', () => {
@@ -290,10 +374,7 @@ describe('App (e2e)', () => {
         .post('/auth/logout')
         .expect(201);
 
-      expect(res.body).toHaveProperty(
-        'message',
-        'User logged out successfully',
-      );
+      expect(res.body).toHaveProperty('message', 'User logged out successfully');
     });
   });
 });

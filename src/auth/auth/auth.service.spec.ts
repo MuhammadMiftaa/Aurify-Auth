@@ -8,8 +8,9 @@ import { HttpException } from '@nestjs/common';
 import * as generateUtils from 'src/utils/generate.utils';
 import { OTP_STATUS } from 'src/utils/const.utils';
 import bcrypt from 'bcryptjs';
+import { ProfileGrpcService } from 'src/grpc/profile/profile-grpc.service';
 
-// ─── Mock Factories ─────────────────────────────────────────────────────────
+// ─── Mock Factories ──────────────────────────────────────────────────────────
 
 const mockLogger = {
   info: jest.fn(),
@@ -47,6 +48,17 @@ const mockEmailService = {
   sendOTP: jest.fn(),
 };
 
+const mockProfileGrpcService = {
+  createProfile: jest.fn().mockResolvedValue({
+    id: 'profile-id',
+    user_id: 'user-id',
+    fullname: 'John Doe',
+    photo_url: '',
+    created_at: '',
+    updated_at: '',
+  }),
+};
+
 describe('AuthService', () => {
   let service: AuthService;
 
@@ -57,6 +69,7 @@ describe('AuthService', () => {
         { provide: PrismaService, useValue: mockPrismaService },
         { provide: JwtService, useValue: mockJwtService },
         { provide: EmailService, useValue: mockEmailService },
+        { provide: ProfileGrpcService, useValue: mockProfileGrpcService },
         { provide: WINSTON_MODULE_PROVIDER, useValue: mockLogger },
       ],
     }).compile();
@@ -227,7 +240,7 @@ describe('AuthService', () => {
     };
     const tempToken = 'valid-temp-token';
 
-    it('should complete profile and create user', async () => {
+    it('should complete profile and return a JWT token', async () => {
       const mockUser = {
         id: 'user-id',
         name: 'John Doe',
@@ -247,23 +260,74 @@ describe('AuthService', () => {
       mockPrismaService.$transaction.mockImplementation(async (cb) => {
         if (typeof cb === 'function') {
           const tx = {
-            user: {
-              create: jest.fn().mockResolvedValue(mockUser),
-            },
-            userAuthProvider: {
-              create: jest.fn().mockResolvedValue({}),
-            },
-            oTP: {
-              update: jest.fn().mockResolvedValue({}),
-            },
+            user: { create: jest.fn().mockResolvedValue(mockUser) },
+            userAuthProvider: { create: jest.fn().mockResolvedValue({}) },
+            oTP: { update: jest.fn().mockResolvedValue({}) },
           };
           return cb(tx);
         }
       });
+      mockProfileGrpcService.createProfile.mockResolvedValue({
+        id: 'profile-id',
+        user_id: 'user-id',
+        fullname: 'John Doe',
+        photo_url: '',
+        created_at: '',
+        updated_at: '',
+      });
 
       const result = await service.completeProfile(profileBody, tempToken);
 
-      expect(result).toEqual(mockUser);
+      expect(result).toEqual({ token: 'mock-jwt-token' });
+      expect(mockJwtService.sign).toHaveBeenCalledWith({
+        id: 'user-id',
+        email: 'test@example.com',
+        userAuthProvider: { provider: 'local', providerUserId: 'user-id' },
+      });
+      expect(mockProfileGrpcService.createProfile).toHaveBeenCalledWith({
+        user_id: 'user-id',
+        fullname: 'John Doe',
+      });
+    });
+
+    it('should still return token even if gRPC createProfile fails', async () => {
+      const mockUser = {
+        id: 'user-id',
+        name: 'John Doe',
+        email: 'test@example.com',
+      };
+
+      mockPrismaService.oTP.findFirst.mockResolvedValue({
+        id: 'otp-id',
+        email: 'test@example.com',
+        status: OTP_STATUS._VERIFIED,
+        expiresAt: new Date(Date.now() + 300000),
+      });
+      mockPrismaService.user.findUnique.mockResolvedValue(null);
+      jest
+        .spyOn(generateUtils, 'generateHashPassword')
+        .mockReturnValue('hashed-password');
+      mockPrismaService.$transaction.mockImplementation(async (cb) => {
+        if (typeof cb === 'function') {
+          const tx = {
+            user: { create: jest.fn().mockResolvedValue(mockUser) },
+            userAuthProvider: { create: jest.fn().mockResolvedValue({}) },
+            oTP: { update: jest.fn().mockResolvedValue({}) },
+          };
+          return cb(tx);
+        }
+      });
+      mockProfileGrpcService.createProfile.mockRejectedValue(
+        new Error('gRPC connection refused'),
+      );
+
+      const result = await service.completeProfile(profileBody, tempToken);
+
+      expect(result).toEqual({ token: 'mock-jwt-token' });
+      expect(mockLogger.error).toHaveBeenCalledWith(
+        'Error calling gRPC CreateProfile:',
+        expect.any(Error),
+      );
     });
 
     it('should throw 400 if tempToken is empty', async () => {
@@ -405,7 +469,7 @@ describe('AuthService', () => {
       providerId: 'google-123',
     };
 
-    it('should create new user if user does not exist', async () => {
+    it('should create new user and call gRPC createProfile', async () => {
       mockPrismaService.user.findFirst.mockResolvedValue(null);
       mockPrismaService.user.create.mockResolvedValue({
         id: 'new-user-id',
@@ -415,14 +479,26 @@ describe('AuthService', () => {
           { provider: 'google', providerUserId: 'google-123' },
         ],
       });
+      mockProfileGrpcService.createProfile.mockResolvedValue({
+        id: 'profile-id',
+        user_id: 'new-user-id',
+        fullname: 'OAuth',
+        photo_url: '',
+        created_at: '',
+        updated_at: '',
+      });
 
       const result = await service.oauthLoginCallback(oauthUser);
 
       expect(result).toEqual({ token: 'mock-jwt-token' });
       expect(mockPrismaService.user.create).toHaveBeenCalled();
+      expect(mockProfileGrpcService.createProfile).toHaveBeenCalledWith({
+        user_id: 'new-user-id',
+        fullname: 'OAuth',
+      });
     });
 
-    it('should link existing user with new OAuth provider', async () => {
+    it('should not call gRPC createProfile for existing users', async () => {
       mockPrismaService.user.findFirst.mockResolvedValue({
         id: 'existing-user-id',
         email: 'oauth@example.com',
@@ -437,13 +513,35 @@ describe('AuthService', () => {
         providerUserId: 'google-123',
       });
 
+      await service.oauthLoginCallback(oauthUser);
+
+      expect(mockProfileGrpcService.createProfile).not.toHaveBeenCalled();
+    });
+
+    it('should still return token even if gRPC createProfile fails for new OAuth user', async () => {
+      mockPrismaService.user.findFirst.mockResolvedValue(null);
+      mockPrismaService.user.create.mockResolvedValue({
+        id: 'new-user-id',
+        email: 'oauth@example.com',
+        name: 'OAuth',
+        userAuthProvider: [
+          { provider: 'google', providerUserId: 'google-123' },
+        ],
+      });
+      mockProfileGrpcService.createProfile.mockRejectedValue(
+        new Error('gRPC unavailable'),
+      );
+
       const result = await service.oauthLoginCallback(oauthUser);
 
       expect(result).toEqual({ token: 'mock-jwt-token' });
-      expect(mockPrismaService.userAuthProvider.create).toHaveBeenCalled();
+      expect(mockLogger.error).toHaveBeenCalledWith(
+        'Error calling gRPC CreateProfile (OAuth):',
+        expect.any(Error),
+      );
     });
 
-    it('should use existing provider link if already linked', async () => {
+    it('should link existing user with new OAuth provider (no gRPC call)', async () => {
       mockPrismaService.user.findFirst.mockResolvedValue({
         id: 'existing-user-id',
         email: 'oauth@example.com',
@@ -461,6 +559,7 @@ describe('AuthService', () => {
 
       expect(result).toEqual({ token: 'mock-jwt-token' });
       expect(mockPrismaService.userAuthProvider.create).not.toHaveBeenCalled();
+      expect(mockProfileGrpcService.createProfile).not.toHaveBeenCalled();
     });
   });
 
@@ -565,9 +664,7 @@ describe('AuthService', () => {
                 userId: 'user-id',
               }),
             },
-            oTP: {
-              update: jest.fn().mockResolvedValue({}),
-            },
+            oTP: { update: jest.fn().mockResolvedValue({}) },
           };
           return cb(tx);
         }

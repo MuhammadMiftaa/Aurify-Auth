@@ -1,5 +1,4 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
-import { User, UserAuthProvider } from 'generated/prisma/client';
 import { CompleteProfileRequest } from 'src/model/complete-profile.model';
 import { LoginRequest } from 'src/model/login.model';
 import { RegisterRequest } from 'src/model/register.model';
@@ -14,9 +13,10 @@ import {
 import bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { EmailService } from 'src/email/email/email.service';
-import { log, Logger } from 'winston';
+import { Logger } from 'winston';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { SetPasswordRequest } from 'src/model/set-password.model';
+import { ProfileGrpcService } from 'src/grpc/profile/profile-grpc.service';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +25,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private emailService: EmailService,
+    private profileGrpcService: ProfileGrpcService,
   ) {}
 
   async register(body: RegisterRequest): Promise<{ email: string }> {
@@ -45,12 +46,8 @@ export class AuthService {
 
     const [_, insertOTP] = await this.prisma.$transaction([
       this.prisma.oTP.updateMany({
-        where: {
-          email: body.email,
-        },
-        data: {
-          status: OTP_STATUS._EXPIRED,
-        },
+        where: { email: body.email },
+        data: { status: OTP_STATUS._EXPIRED },
       }),
       this.prisma.oTP.create({
         select: {
@@ -88,12 +85,8 @@ export class AuthService {
         status: true,
         expiresAt: true,
       },
-      where: {
-        email: body.email,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      where: { email: body.email },
+      orderBy: { createdAt: 'desc' },
     });
 
     if (!OTP) {
@@ -115,22 +108,18 @@ export class AuthService {
     const tempToken = generateTempToken();
 
     await this.prisma.oTP.update({
-      where: {
-        id: OTP.id,
-      },
-      data: {
-        status: OTP_STATUS._VERIFIED,
-        tempToken: tempToken,
-      },
+      where: { id: OTP.id },
+      data: { status: OTP_STATUS._VERIFIED, tempToken: tempToken },
     });
 
     return { tempToken };
   }
 
+  // Returns JWT token directly (same as login) after creating the user and calling gRPC CreateProfile
   async completeProfile(
     body: CompleteProfileRequest,
     tempToken: string,
-  ): Promise<User> {
+  ): Promise<{ token: string }> {
     if (!tempToken) {
       throw new HttpException('Invalid temp token', 400);
     }
@@ -142,9 +131,7 @@ export class AuthService {
         status: true,
         expiresAt: true,
       },
-      where: {
-        tempToken: tempToken,
-      },
+      where: { tempToken: tempToken },
     });
 
     if (!OTP) {
@@ -157,20 +144,14 @@ export class AuthService {
 
     if (OTP?.expiresAt < new Date()) {
       await this.prisma.oTP.update({
-        where: {
-          id: OTP.id,
-        },
-        data: {
-          status: OTP_STATUS._EXPIRED,
-        },
+        where: { id: OTP.id },
+        data: { status: OTP_STATUS._EXPIRED },
       });
       throw new HttpException('Expired token', 400);
     }
 
     const userExists = await this.prisma.user.findUnique({
-      where: {
-        email: OTP.email,
-      },
+      where: { email: OTP.email },
     });
 
     if (userExists) {
@@ -197,18 +178,30 @@ export class AuthService {
       });
 
       await tx.oTP.update({
-        where: {
-          id: OTP.id,
-        },
-        data: {
-          status: OTP_STATUS._COMPLETED,
-        },
+        where: { id: OTP.id },
+        data: { status: OTP_STATUS._COMPLETED },
       });
 
       return user;
     });
 
-    return userCreated;
+    // Call gRPC CreateProfile — fire-and-forget style: log errors but don't fail registration
+    try {
+      await this.profileGrpcService.createProfile({
+        user_id: userCreated.id,
+        fullname: body.name,
+      });
+    } catch (error) {
+      this.logger.error('Error calling gRPC CreateProfile:', error);
+    }
+
+    const token = this.jwtService.sign({
+      id: userCreated.id,
+      email: userCreated.email,
+      userAuthProvider: { provider: 'local', providerUserId: userCreated.id },
+    });
+
+    return { token };
   }
 
   async login(body: LoginRequest): Promise<{ token: string }> {
@@ -219,21 +212,13 @@ export class AuthService {
         email: true,
         password: true,
         userAuthProvider: {
-          select: {
-            provider: true,
-            providerUserId: true,
-          },
-          where: {
-            provider: 'local',
-          },
+          select: { provider: true, providerUserId: true },
+          where: { provider: 'local' },
         },
         createdAt: true,
         deletedAt: true,
       },
-      where: {
-        email: body.email,
-        deletedAt: null,
-      },
+      where: { email: body.email, deletedAt: null },
     });
 
     if (!user) {
@@ -270,16 +255,10 @@ export class AuthService {
         email: true,
         name: true,
         userAuthProvider: {
-          select: {
-            provider: true,
-            providerUserId: true,
-          },
+          select: { provider: true, providerUserId: true },
         },
       },
-      where: {
-        email: oauthUser.email,
-        deletedAt: null,
-      },
+      where: { email: oauthUser.email, deletedAt: null },
     });
 
     let userAuthProvider: {
@@ -291,17 +270,10 @@ export class AuthService {
       // $ If email has ever created, link existing email with OAuth provider
       // $ Check if user has already linked their account with the OAuth provider
       userAuthProvider = await this.prisma.userAuthProvider.findFirst({
-        where: {
-          userId: user.id,
-          provider: oauthUser.provider,
-        },
-        select: {
-          provider: true,
-          providerUserId: true,
-        },
+        where: { userId: user.id, provider: oauthUser.provider },
+        select: { provider: true, providerUserId: true },
       });
 
-      // $ If user has not linked their account with the OAuth provider, create a new link
       if (!userAuthProvider) {
         userAuthProvider = await this.prisma.userAuthProvider.create({
           data: {
@@ -309,24 +281,17 @@ export class AuthService {
             provider: oauthUser.provider,
             providerUserId: oauthUser.providerId,
           },
-          select: {
-            provider: true,
-            providerUserId: true,
-          },
+          select: { provider: true, providerUserId: true },
         });
       }
     } else {
-      // $ If email has never created, create new user
       user = await this.prisma.user.create({
         select: {
           id: true,
           email: true,
           name: true,
           userAuthProvider: {
-            select: {
-              provider: true,
-              providerUserId: true,
-            },
+            select: { provider: true, providerUserId: true },
           },
         },
         data: {
@@ -341,6 +306,16 @@ export class AuthService {
           },
         },
       });
+
+      // Call gRPC CreateProfile for new OAuth users — fire-and-forget
+      try {
+        await this.profileGrpcService.createProfile({
+          user_id: user.id,
+          fullname: user.name ?? '',
+        });
+      } catch (error) {
+        this.logger.error('Error calling gRPC CreateProfile (OAuth):', error);
+      }
     }
 
     const token = this.jwtService.sign({
@@ -358,31 +333,21 @@ export class AuthService {
   }
 
   async setPasswordOTP(email: string): Promise<{ email: string }> {
-    const user = await this.prisma.user.findUnique({
-      where: { email },
-    });
+    const user = await this.prisma.user.findUnique({ where: { email } });
 
     if (!user) {
       throw new HttpException('User not found', 404);
     }
 
-    let purpose = '';
-    if (user.password === '') {
-      purpose = OTP_PURPOSE._SET_PASSWORD;
-    } else {
-      purpose = OTP_PURPOSE._FORGOT_PASSWORD;
-    }
+    const purpose =
+      user.password === '' ? OTP_PURPOSE._SET_PASSWORD : OTP_PURPOSE._FORGOT_PASSWORD;
 
     const OTP = generateOTP();
 
     const [_, insertOTP] = await this.prisma.$transaction([
       this.prisma.oTP.updateMany({
-        where: {
-          email: email,
-        },
-        data: {
-          status: OTP_STATUS._EXPIRED,
-        },
+        where: { email: email },
+        data: { status: OTP_STATUS._EXPIRED },
       }),
       this.prisma.oTP.create({
         select: {
@@ -420,15 +385,8 @@ export class AuthService {
     }
 
     const OTP = await this.prisma.oTP.findFirst({
-      select: {
-        id: true,
-        email: true,
-        status: true,
-        expiresAt: true,
-      },
-      where: {
-        tempToken: tempToken,
-      },
+      select: { id: true, email: true, status: true, expiresAt: true },
+      where: { tempToken: tempToken },
     });
 
     if (!OTP) {
@@ -441,12 +399,8 @@ export class AuthService {
 
     if (OTP?.expiresAt < new Date()) {
       await this.prisma.oTP.update({
-        where: {
-          id: OTP.id,
-        },
-        data: {
-          status: OTP_STATUS._EXPIRED,
-        },
+        where: { id: OTP.id },
+        data: { status: OTP_STATUS._EXPIRED },
       });
       throw new HttpException('Expired token', 400);
     }
@@ -456,12 +410,8 @@ export class AuthService {
     const { userUpdated, userAuthProvider } = await this.prisma.$transaction(
       async (tx) => {
         const userUpdated = await tx.user.update({
-          where: {
-            email: OTP.email,
-          },
-          data: {
-            password: hashedPassword,
-          },
+          where: { email: OTP.email },
+          data: { password: hashedPassword },
         });
 
         const userAuthProvider = await tx.userAuthProvider.upsert({
@@ -487,12 +437,8 @@ export class AuthService {
         });
 
         await tx.oTP.update({
-          where: {
-            id: OTP.id,
-          },
-          data: {
-            status: OTP_STATUS._COMPLETED,
-          },
+          where: { id: OTP.id },
+          data: { status: OTP_STATUS._COMPLETED },
         });
 
         return { userUpdated, userAuthProvider };
@@ -512,9 +458,6 @@ export class AuthService {
   }
 
   async logout() {
-    // logout logic
-    return {
-      message: 'User logged out successfully',
-    };
+    return { message: 'User logged out successfully' };
   }
 }

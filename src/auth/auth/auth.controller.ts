@@ -2,13 +2,11 @@ import {
   Body,
   Controller,
   Get,
-  HttpException,
   HttpRedirectResponse,
   Post,
   Query,
   Redirect,
   Req,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -33,7 +31,10 @@ import {
   SetPasswordRequest,
   setPasswordRequestValidation,
 } from 'src/model/set-password.model';
-import { RequestSetPasswordRequest, requestSetPasswordValidation } from 'src/model/request-set-password.model';
+import {
+  RequestSetPasswordRequest,
+  requestSetPasswordValidation,
+} from 'src/model/request-set-password.model';
 
 @Controller('auth')
 export class AuthController {
@@ -77,13 +78,13 @@ export class AuthController {
     body: CompleteProfileRequest,
     @Query('tempToken') tempToken: string,
   ) {
-    const user = await this.authService.completeProfile(body, tempToken);
+    const res = await this.authService.completeProfile(body, tempToken);
 
     return {
       status: true,
       statusCode: 200,
       message: 'Profile completed successfully',
-      data: user,
+      data: res,
     };
   }
 
@@ -104,7 +105,7 @@ export class AuthController {
   @Get('/google')
   @UseGuards(AuthGuard('google'))
   googleLogin() {
-    // * Guard akan redirect ke Google
+    // Guard redirects to Google
   }
 
   @Get('/google/callback')
@@ -124,7 +125,7 @@ export class AuthController {
   @Get('/github')
   @UseGuards(AuthGuard('github'))
   githubLogin() {
-    // * Guard akan redirect ke GitHub
+    // Guard redirects to GitHub
   }
 
   @Get('/github/callback')
@@ -144,7 +145,7 @@ export class AuthController {
   @Get('/microsoft')
   @UseGuards(AuthGuard('microsoft'))
   microsoftLogin() {
-    // * Guard akan redirect ke Microsoft
+    // Guard redirects to Microsoft
   }
 
   @Get('/microsoft/callback')
@@ -162,7 +163,10 @@ export class AuthController {
   }
 
   @Post('/request-set-password')
-  async requestSetPassword(@Body(new ValidationPipe(requestSetPasswordValidation)) body: RequestSetPasswordRequest) {
+  async requestSetPassword(
+    @Body(new ValidationPipe(requestSetPasswordValidation))
+    body: RequestSetPasswordRequest,
+  ) {
     const res = await this.authService.setPasswordOTP(body.email);
 
     return {

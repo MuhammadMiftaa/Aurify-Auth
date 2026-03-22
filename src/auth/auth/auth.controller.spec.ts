@@ -90,13 +90,10 @@ describe('AuthController', () => {
   // POST /auth/complete-profile
   // ═══════════════════════════════════════════════════════════════════════════
   describe('POST /complete-profile', () => {
-    it('should return success response with user data', async () => {
-      const mockUser = {
-        id: 'user-id',
-        name: 'John Doe',
-        email: 'test@example.com',
-      };
-      mockAuthService.completeProfile.mockResolvedValue(mockUser);
+    it('should return success response with JWT token', async () => {
+      mockAuthService.completeProfile.mockResolvedValue({
+        token: 'jwt-token-123',
+      });
 
       const result = await controller.completeProfile(
         {
@@ -111,7 +108,7 @@ describe('AuthController', () => {
         status: true,
         statusCode: 200,
         message: 'Profile completed successfully',
-        data: mockUser,
+        data: { token: 'jwt-token-123' },
       });
       expect(mockAuthService.completeProfile).toHaveBeenCalledWith(
         {

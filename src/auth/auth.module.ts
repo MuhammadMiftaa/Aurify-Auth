@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { GoogleOauth } from './oauth/google.oauth';
 import { GithubOauth } from './oauth/github.oauth';
 import { MicrosoftOauth } from './oauth/microsoft.oauth';
+import { ProfileGrpcModule } from 'src/grpc/profile/profile-grpc.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MicrosoftOauth } from './oauth/microsoft.oauth';
       }),
       inject: [ConfigService],
     }),
+    ProfileGrpcModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, GoogleOauth, GithubOauth, MicrosoftOauth],
