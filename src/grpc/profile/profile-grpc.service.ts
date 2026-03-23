@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PROFILE_GRPC_CLIENT } from './profile-grpc.module';
 import profilePbModule from '@muhammadmiftaa/refina-protobuf/profile/profile_pb.js';
+import { PROFILE_GRPC_CLIENT } from './profile-grpc.constants';
 
 // ─── gRPC contract types (mirrors profile.proto) ────────────────────────────
 

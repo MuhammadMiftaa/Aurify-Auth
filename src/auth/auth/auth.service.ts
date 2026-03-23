@@ -163,7 +163,6 @@ export class AuthService {
     const userCreated = await this.prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
         data: {
-          name: body.name,
           email: OTP.email,
           password: hashedPassword,
         },
@@ -208,7 +207,6 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({
       select: {
         id: true,
-        name: true,
         email: true,
         password: true,
         userAuthProvider: {
@@ -253,7 +251,6 @@ export class AuthService {
       select: {
         id: true,
         email: true,
-        name: true,
         userAuthProvider: {
           select: { provider: true, providerUserId: true },
         },
@@ -289,14 +286,12 @@ export class AuthService {
         select: {
           id: true,
           email: true,
-          name: true,
           userAuthProvider: {
             select: { provider: true, providerUserId: true },
           },
         },
         data: {
           email: oauthUser.email,
-          name: oauthUser.firstName || oauthUser.username || oauthUser.name,
           password: '',
           userAuthProvider: {
             create: {
@@ -311,7 +306,7 @@ export class AuthService {
       try {
         await this.profileGrpcService.createProfile({
           user_id: user.id,
-          fullname: user.name ?? '',
+          fullname: oauthUser.firstName || oauthUser.username || oauthUser.name,
         });
       } catch (error) {
         this.logger.error('Error calling gRPC CreateProfile (OAuth):', error);
