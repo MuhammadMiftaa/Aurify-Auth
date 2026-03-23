@@ -3,7 +3,7 @@ import { ZodType } from 'zod';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform {
-  constructor(private zodType: ZodType) {}
+  constructor(private readonly zodType: ZodType) {}
 
   transform(value: any, metadata: ArgumentMetadata) {
     return this.zodType.parse(value);

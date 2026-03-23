@@ -2,25 +2,25 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transporter } from 'nodemailer';
 import * as nodemailer from 'nodemailer';
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { OTP_EXPIRATION } from 'src/utils/const.utils';
 import { Logger } from 'winston';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 
 @Injectable()
 export class EmailService {
-  private transporter: Transporter;
+  private readonly transporter: Transporter;
 
   constructor(
-    @Inject(WINSTON_MODULE_PROVIDER) private logger: Logger,
-    private configService: ConfigService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+    private readonly configService: ConfigService,
   ) {
     this.transporter = nodemailer.createTransport({
       host: this.configService.get<string>('EMAIL_HOST'),
       port: this.configService.get<number>('EMAIL_PORT'),
-      secure:
-        this.configService.get<number>('EMAIL_SECURE') === 1 ? true : false,
+      // S6644: remove unnecessary boolean literal in conditional expression
+      secure: this.configService.get<number>('EMAIL_SECURE') === 1,
       auth: {
         user: this.configService.get<string>('EMAIL_USER'),
         pass: this.configService.get<string>('EMAIL_PASSWORD'),

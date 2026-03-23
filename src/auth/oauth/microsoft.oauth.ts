@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MicrosoftOauth extends PassportStrategy(Strategy, 'microsoft') {
-  constructor(private configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     super({
       clientID: configService.get<string>('MICROSOFT_CLIENT_ID') ?? '',
       clientSecret: configService.get<string>('MICROSOFT_CLIENT_SECRET') ?? '',

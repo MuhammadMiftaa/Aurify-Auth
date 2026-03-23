@@ -21,11 +21,11 @@ import { ProfileGrpcService } from 'src/grpc/profile/profile-grpc.service';
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(WINSTON_MODULE_PROVIDER) private logger: Logger,
-    private prisma: PrismaService,
-    private jwtService: JwtService,
-    private emailService: EmailService,
-    private profileGrpcService: ProfileGrpcService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+    private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
+    private readonly emailService: EmailService,
+    private readonly profileGrpcService: ProfileGrpcService,
   ) {}
 
   async register(body: RegisterRequest): Promise<{ email: string }> {
@@ -33,9 +33,10 @@ export class AuthService {
       where: { email: body.email },
     });
 
-    if (existingUser && existingUser.password !== '') {
+    // S6582: use optional chain
+    if (existingUser?.password !== '' && existingUser) {
       throw new HttpException('User already exists', 400);
-    } else if (existingUser && existingUser.password === '') {
+    } else if (existingUser?.password === '') {
       throw new HttpException(
         'Email already registered. Please log in with OAuth or set a password.',
         409,
@@ -313,15 +314,15 @@ export class AuthService {
       }
     }
 
+    // S6606: use ??= instead of assignment expression
+    userAuthProvider ??= user.userAuthProvider.find(
+      (auth) => auth.provider === oauthUser.provider,
+    ) ?? null;
+
     const token = this.jwtService.sign({
       id: user.id,
       email: user.email,
-      userAuthProvider:
-        userAuthProvider || // $ If user has linked their account with the OAuth provider
-        user.userAuthProvider.find(
-          // $ If user recently create account with the OAuth provider
-          (auth) => auth.provider === oauthUser.provider,
-        ),
+      userAuthProvider,
     });
 
     return { token };

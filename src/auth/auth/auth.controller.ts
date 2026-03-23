@@ -114,12 +114,7 @@ export class AuthController {
   async googleLoginCallback(
     @Req() req: Request,
   ): Promise<HttpRedirectResponse> {
-    const res = await this.authService.oauthLoginCallback(req.user);
-
-    return {
-      url: `${this.configService.get<string>('REDIRECT_URL')}#aurify_token=${res.token}`,
-      statusCode: 302,
-    };
+    return this.buildOAuthRedirect(req.user);
   }
 
   @Get('/github')
@@ -134,12 +129,7 @@ export class AuthController {
   async githubLoginCallback(
     @Req() req: Request,
   ): Promise<HttpRedirectResponse> {
-    const res = await this.authService.oauthLoginCallback(req.user);
-
-    return {
-      url: `${this.configService.get<string>('REDIRECT_URL')}#aurify_token=${res.token}`,
-      statusCode: 302,
-    };
+    return this.buildOAuthRedirect(req.user);
   }
 
   @Get('/microsoft')
@@ -154,12 +144,7 @@ export class AuthController {
   async microsoftLoginCallback(
     @Req() req: Request,
   ): Promise<HttpRedirectResponse> {
-    const res = await this.authService.oauthLoginCallback(req.user);
-
-    return {
-      url: `${this.configService.get<string>('REDIRECT_URL')}#aurify_token=${res.token}`,
-      statusCode: 302,
-    };
+    return this.buildOAuthRedirect(req.user);
   }
 
   @Post('/request-set-password')
@@ -196,5 +181,14 @@ export class AuthController {
   @Post('/logout')
   logout() {
     return this.authService.logout();
+  }
+
+  // S4144: extracted shared OAuth redirect logic to eliminate duplicate implementations
+  private async buildOAuthRedirect(oauthUser: any): Promise<HttpRedirectResponse> {
+    const res = await this.authService.oauthLoginCallback(oauthUser);
+    return {
+      url: `${this.configService.get<string>('REDIRECT_URL')}#aurify_token=${res.token}`,
+      statusCode: 302,
+    };
   }
 }

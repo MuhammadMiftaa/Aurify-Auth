@@ -11,7 +11,7 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor(
-    @Inject(WINSTON_MODULE_PROVIDER) private logger: Logger
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger
   ) {
     const pool = new Pool({ connectionString: process.env.DATABASE_URL });
     const adapter = new PrismaPg(pool);
