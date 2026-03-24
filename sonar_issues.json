@@ -16,7 +16,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/auth/auth.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 28,
       "hash": "8f35a397666927f81e66186be98d94a3",
       "textRange": {
         "startLine": 28,
@@ -25,7 +24,8 @@
         "endOffset": 30
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'profileGrpcService: ProfileGrpcService' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -35,7 +35,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-03-22T13:51:16+0000",
-      "updateDate": "2026-03-23T04:38:17+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -46,7 +47,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -98,7 +99,6 @@
       "severity": "CRITICAL",
       "component": "aurify-backend_Aurify-Auth:src/email/templates/otp-email-template.html",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 156,
       "hash": "b2af8f578746b15d53ef79d7c057018c",
       "textRange": {
         "startLine": 156,
@@ -107,14 +107,16 @@
         "endOffset": 18
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Unexpected shorthand \"background\" after \"background-color\"",
       "effort": "5min",
       "debt": "5min",
       "author": "madmifta77@gmail.com",
       "tags": [],
       "creationDate": "2026-03-11T02:44:10+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "BUG",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "LOGICAL",
@@ -125,7 +127,7 @@
           "severity": "HIGH"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -135,7 +137,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/email/templates/otp-email-template.html",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 372,
       "hash": "15d643774f4cd1b81dbd984484d38907",
       "textRange": {
         "startLine": 372,
@@ -144,7 +145,8 @@
         "endOffset": 38
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Remove this commented out code.",
       "effort": "5min",
       "debt": "5min",
@@ -153,7 +155,8 @@
         "unused"
       ],
       "creationDate": "2026-03-11T02:44:10+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -164,7 +167,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -216,11 +219,11 @@
       "severity": "MINOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/auth/auth.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 274,
+      "line": 275,
       "hash": "c9d79450fc77d1e59b8cdea7113f64a3",
       "textRange": {
-        "startLine": 274,
-        "endLine": 283,
+        "startLine": 275,
+        "endLine": 284,
         "startOffset": 6,
         "endOffset": 7
       },
@@ -257,11 +260,11 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/utils/const.utils.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 10,
+      "line": 18,
       "hash": "30ff32d679f6cbf2b0173240aa66a95c",
       "textRange": {
-        "startLine": 10,
-        "endLine": 10,
+        "startLine": 18,
+        "endLine": 18,
         "startOffset": 20,
         "endOffset": 37
       },
@@ -296,11 +299,11 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/utils/const.utils.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 11,
+      "line": 19,
       "hash": "1c9a2f2fca80c7073539f7c501bf58f0",
       "textRange": {
-        "startLine": 11,
-        "endLine": 11,
+        "startLine": 19,
+        "endLine": 19,
         "startOffset": 17,
         "endOffset": 31
       },
@@ -419,7 +422,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/auth/auth.controller.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 134,
       "hash": "3082f86a9a50bfbd789772d1c601fa38",
       "textRange": {
         "startLine": 134,
@@ -443,7 +445,8 @@
           ]
         }
       ],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Update this function so that its implementation is not identical to the one on line 114.",
       "effort": "15min",
       "debt": "15min",
@@ -454,7 +457,8 @@
         "suspicious"
       ],
       "creationDate": "2026-02-04T02:36:04+0000",
-      "updateDate": "2026-03-23T04:38:17+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "DISTINCT",
@@ -465,7 +469,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -475,7 +479,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/auth/auth.controller.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 154,
       "hash": "61da746eb96e060da3562bdf25ddc3e9",
       "textRange": {
         "startLine": 154,
@@ -499,7 +502,8 @@
           ]
         }
       ],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Update this function so that its implementation is not identical to the one on line 114.",
       "effort": "15min",
       "debt": "15min",
@@ -510,7 +514,8 @@
         "suspicious"
       ],
       "creationDate": "2026-02-04T02:36:04+0000",
-      "updateDate": "2026-03-23T04:38:17+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "DISTINCT",
@@ -521,7 +526,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -531,7 +536,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/auth/auth.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 38,
       "hash": "745f0ec3d291dada18eb975a92db5ded",
       "textRange": {
         "startLine": 38,
@@ -540,7 +544,8 @@
         "endOffset": 59
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
       "effort": "5min",
       "debt": "5min",
@@ -549,7 +554,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-02-04T02:36:04+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -560,7 +566,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -570,7 +576,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/oauth/github.oauth.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 8,
       "hash": "4d9d4d57822619489dfec284b24c5dde",
       "textRange": {
         "startLine": 8,
@@ -579,7 +584,8 @@
         "endOffset": 35
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'configService: ConfigService' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -589,7 +595,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-02-04T02:36:04+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -600,7 +607,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -610,7 +617,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/oauth/google.oauth.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 8,
       "hash": "4d9d4d57822619489dfec284b24c5dde",
       "textRange": {
         "startLine": 8,
@@ -619,7 +625,8 @@
         "endOffset": 35
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'configService: ConfigService' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -629,7 +636,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-02-04T02:36:04+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -640,7 +648,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -650,7 +658,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/oauth/microsoft.oauth.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 8,
       "hash": "4d9d4d57822619489dfec284b24c5dde",
       "textRange": {
         "startLine": 8,
@@ -659,7 +666,8 @@
         "endOffset": 35
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'configService: ConfigService' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -669,7 +677,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-02-04T02:36:04+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -680,7 +689,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -690,7 +699,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/auth/auth.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 24,
       "hash": "9e5a259c43d0d4a46e5b3cc21fb8a524",
       "textRange": {
         "startLine": 24,
@@ -699,7 +707,8 @@
         "endOffset": 51
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'logger: Logger' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -709,7 +718,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-02-02T12:52:35+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -720,7 +730,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -730,7 +740,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/auth/auth.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 27,
       "hash": "f7b6b7dd4021bf9106bf12a822a8fbc3",
       "textRange": {
         "startLine": 27,
@@ -739,7 +748,8 @@
         "endOffset": 24
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'emailService: EmailService' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -749,7 +759,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-02-02T12:52:35+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -760,7 +771,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -770,7 +781,6 @@
       "severity": "MINOR",
       "component": "aurify-backend_Aurify-Auth:src/email/email/email.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 5,
       "hash": "f84a847d69ad6b11ef843eba9830124b",
       "textRange": {
         "startLine": 5,
@@ -779,7 +789,8 @@
         "endOffset": 24
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Prefer `node:fs` over `fs`.",
       "effort": "5min",
       "debt": "5min",
@@ -790,7 +801,8 @@
         "nodejs"
       ],
       "creationDate": "2026-02-02T12:52:35+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CONVENTIONAL",
@@ -801,7 +813,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -811,7 +823,6 @@
       "severity": "MINOR",
       "component": "aurify-backend_Aurify-Auth:src/email/email/email.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 6,
       "hash": "6c88602ec87337f7ced5b0656f1d5f29",
       "textRange": {
         "startLine": 6,
@@ -820,7 +831,8 @@
         "endOffset": 28
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Prefer `node:path` over `path`.",
       "effort": "5min",
       "debt": "5min",
@@ -831,7 +843,8 @@
         "nodejs"
       ],
       "creationDate": "2026-02-02T12:52:35+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CONVENTIONAL",
@@ -842,7 +855,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -852,7 +865,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/email/email/email.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 13,
       "hash": "b2ef230a0db9f37d0000af8023368ada",
       "textRange": {
         "startLine": 13,
@@ -861,7 +873,8 @@
         "endOffset": 21
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'transporter' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -871,7 +884,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-02-02T12:52:35+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -882,7 +896,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -892,7 +906,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/email/email/email.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 16,
       "hash": "9e5a259c43d0d4a46e5b3cc21fb8a524",
       "textRange": {
         "startLine": 16,
@@ -901,7 +914,8 @@
         "endOffset": 51
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'logger: Logger' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -911,7 +925,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-02-02T12:52:35+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -922,7 +937,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -932,7 +947,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/email/email/email.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 17,
       "hash": "d96c4386aef6d4675d259d4918ba5c89",
       "textRange": {
         "startLine": 17,
@@ -941,7 +955,8 @@
         "endOffset": 25
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'configService: ConfigService' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -951,7 +966,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-02-02T12:52:35+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -962,7 +978,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -972,7 +988,6 @@
       "severity": "MINOR",
       "component": "aurify-backend_Aurify-Auth:src/email/email/email.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 23,
       "hash": "02493149b1ebd0d403057a47076bf654",
       "textRange": {
         "startLine": 23,
@@ -981,14 +996,16 @@
         "endOffset": 75
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Unnecessary use of boolean literals in conditional expression.",
       "effort": "5min",
       "debt": "5min",
       "author": "madmifta77@gmail.com",
       "tags": [],
       "creationDate": "2026-02-02T12:52:35+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -999,7 +1016,7 @@
           "severity": "LOW"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -1009,7 +1026,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/auth/auth.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 26,
       "hash": "a33af11144cf687b4ac05a29977f0ce5",
       "textRange": {
         "startLine": 26,
@@ -1018,7 +1034,8 @@
         "endOffset": 22
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'jwtService: JwtService' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -1028,7 +1045,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-02-02T09:54:38+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -1039,7 +1057,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -1049,7 +1067,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/validation/validation.pipe.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 6,
       "hash": "38c8ff372f81180330f51391e1a9223d",
       "textRange": {
         "startLine": 6,
@@ -1058,7 +1075,8 @@
         "endOffset": 29
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'zodType: ZodType' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -1068,7 +1086,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-01-22T10:12:15+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -1079,7 +1098,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -1089,7 +1108,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/middleware/log/log.middleware.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 8,
       "hash": "6a16fd79e86d5f9dd7a595b07cf482ea",
       "textRange": {
         "startLine": 8,
@@ -1098,7 +1116,8 @@
         "endOffset": 61
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'logger: Logger' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -1108,7 +1127,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-01-22T09:06:24+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -1119,7 +1139,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -1129,7 +1149,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/auth/auth/auth.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 25,
       "hash": "4b8e110df360d40a6c81cb267925d1ac",
       "textRange": {
         "startLine": 25,
@@ -1138,7 +1157,8 @@
         "endOffset": 18
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'prisma: PrismaService' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -1148,7 +1168,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-01-22T08:17:38+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -1159,7 +1180,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },
@@ -1169,7 +1190,6 @@
       "severity": "MAJOR",
       "component": "aurify-backend_Aurify-Auth:src/prisma/prisma/prisma.service.ts",
       "project": "aurify-backend_Aurify-Auth",
-      "line": 14,
       "hash": "8faaa5591524ff880f28c3374919f3fb",
       "textRange": {
         "startLine": 14,
@@ -1178,7 +1198,8 @@
         "endOffset": 51
       },
       "flows": [],
-      "status": "OPEN",
+      "resolution": "FIXED",
+      "status": "CLOSED",
       "message": "Member 'logger: Logger' is never reassigned; mark it as `readonly`.",
       "effort": "2min",
       "debt": "2min",
@@ -1188,7 +1209,8 @@
         "type-dependent"
       ],
       "creationDate": "2026-01-22T05:38:14+0000",
-      "updateDate": "2026-03-14T08:43:56+0000",
+      "updateDate": "2026-03-23T15:08:29+0000",
+      "closeDate": "2026-03-23T15:08:29+0000",
       "type": "CODE_SMELL",
       "organization": "aurify-backend",
       "cleanCodeAttribute": "CLEAR",
@@ -1199,7 +1221,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "issueStatus": "OPEN",
+      "issueStatus": "FIXED",
       "projectName": "Aurify-Auth",
       "internalTags": []
     },

@@ -272,16 +272,15 @@ export class AuthService {
         select: { provider: true, providerUserId: true },
       });
 
-      if (!userAuthProvider) {
-        userAuthProvider = await this.prisma.userAuthProvider.create({
-          data: {
-            userId: user.id,
-            provider: oauthUser.provider,
-            providerUserId: oauthUser.providerId,
-          },
-          select: { provider: true, providerUserId: true },
-        });
-      }
+      // S6606: use ??= instead of if (!userAuthProvider) { userAuthProvider = ... }
+      userAuthProvider ??= await this.prisma.userAuthProvider.create({
+        data: {
+          userId: user.id,
+          provider: oauthUser.provider,
+          providerUserId: oauthUser.providerId,
+        },
+        select: { provider: true, providerUserId: true },
+      });
     } else {
       user = await this.prisma.user.create({
         select: {
@@ -315,9 +314,10 @@ export class AuthService {
     }
 
     // S6606: use ??= instead of assignment expression
-    userAuthProvider ??= user.userAuthProvider.find(
-      (auth) => auth.provider === oauthUser.provider,
-    ) ?? null;
+    userAuthProvider ??=
+      user.userAuthProvider.find(
+        (auth) => auth.provider === oauthUser.provider,
+      ) ?? null;
 
     const token = this.jwtService.sign({
       id: user.id,
@@ -336,7 +336,9 @@ export class AuthService {
     }
 
     const purpose =
-      user.password === '' ? OTP_PURPOSE._SET_PASSWORD : OTP_PURPOSE._FORGOT_PASSWORD;
+      user.password === ''
+        ? OTP_PURPOSE._SET_PASSWORD
+        : OTP_PURPOSE._FORGOT_PASSWORD;
 
     const OTP = generateOTP();
 
