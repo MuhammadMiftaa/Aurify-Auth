@@ -137,6 +137,8 @@ jobs:
             export STG_REFINA_AUTH_IMAGE_TAG=${{ env.TAG_NAME }} &&
 
             cd ~/web/staging/refinamicroservices &&
+            # UPDATE FILE .env LOKAL AGAR TETAP SINKRON
+            sed -i \"s|^STG_REFINA_AUTH_IMAGE_TAG=.*|STG_REFINA_AUTH_IMAGE_TAG=\${STG_REFINA_AUTH_IMAGE_TAG}|\" .env &&
 
             podman login -u ${{ github.actor }} -p ${{ secrets.GHCR_TOKEN }} ${{ env.REGISTRY }} &&
             podman pull \$STG_REFINA_AUTH_IMAGE:\$STG_REFINA_AUTH_IMAGE_TAG &&
@@ -179,6 +181,8 @@ jobs:
             export PROD_REFINA_AUTH_IMAGE_TAG=${{ env.TAG_NAME }} &&
 
             cd ~/web/production/refinamicroservices &&
+            # UPDATE FILE .env LOKAL AGAR TETAP SINKRON
+            sed -i \"s|^PROD_REFINA_AUTH_IMAGE_TAG=.*|PROD_REFINA_AUTH_IMAGE_TAG=\${PROD_REFINA_AUTH_IMAGE_TAG}|\" .env &&
 
             podman login -u ${{ github.actor }} -p ${{ secrets.GHCR_TOKEN }} ${{ env.REGISTRY }} &&
             podman pull \$PROD_REFINA_AUTH_IMAGE:\$PROD_REFINA_AUTH_IMAGE_TAG &&
@@ -221,6 +225,8 @@ jobs:
             export APP_IMAGE_STG_MIGRATE_TAG=${{ env.TAG_NAME }} &&
 
             cd ~/web/staging/refinamicroservices &&
+            # UPDATE FILE .env LOKAL AGAR TETAP SINKRON
+            sed -i \"s|^APP_IMAGE_STG_MIGRATE_TAG=.*|APP_IMAGE_STG_MIGRATE_TAG=\${APP_IMAGE_STG_MIGRATE_TAG}|\" .env &&
 
             podman login -u ${{ github.actor }} -p ${{ secrets.GHCR_TOKEN }} ${{ env.REGISTRY }} &&
             podman pull \$APP_IMAGE_STG_MIGRATE:\$APP_IMAGE_STG_MIGRATE_TAG &&
@@ -265,6 +271,8 @@ jobs:
             export APP_IMAGE_PROD_MIGRATE_TAG=${{ env.TAG_NAME }} &&
 
             cd ~/web/production/refinamicroservices &&
+            # UPDATE FILE .env LOKAL AGAR TETAP SINKRON
+            sed -i \"s|^APP_IMAGE_PROD_MIGRATE_TAG=.*|APP_IMAGE_PROD_MIGRATE_TAG=\${APP_IMAGE_PROD_MIGRATE_TAG}|\" .env &&
 
             podman login -u ${{ github.actor }} -p ${{ secrets.GHCR_TOKEN }} ${{ env.REGISTRY }} &&
             podman pull \$APP_IMAGE_PROD_MIGRATE:\$APP_IMAGE_PROD_MIGRATE_TAG &&

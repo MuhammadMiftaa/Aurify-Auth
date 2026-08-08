@@ -7,6 +7,9 @@ import { GoogleOauth } from './oauth/google.oauth';
 import { GithubOauth } from './oauth/github.oauth';
 import { MicrosoftOauth } from './oauth/microsoft.oauth';
 import { ProfileGrpcModule } from 'src/grpc/profile/profile-grpc.module';
+import { PatController } from './pat/pat.controller';
+import { PatService } from './pat/pat.service';
+import { JwtAuthGuard } from './guard/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -19,7 +22,14 @@ import { ProfileGrpcModule } from 'src/grpc/profile/profile-grpc.module';
     }),
     ProfileGrpcModule,
   ],
-  controllers: [AuthController],
-  providers: [AuthService, GoogleOauth, GithubOauth, MicrosoftOauth],
+  controllers: [AuthController, PatController],
+  providers: [
+    AuthService,
+    PatService,
+    JwtAuthGuard,
+    GoogleOauth,
+    GithubOauth,
+    MicrosoftOauth,
+  ],
 })
 export class AuthModule {}

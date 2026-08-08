@@ -23,9 +23,33 @@ model User {
   deletedAt DateTime?
 
   userAuthProvider UserAuthProvider[]
+  personalAccessTokens PersonalAccessToken[]
 
   @@index([email, deletedAt])
   @@map("users")
+}
+
+/// Long-lived credential for non-browser clients (the MCP gateway). Exchanged
+/// for a short-lived JWT rather than used directly, so downstream services keep
+/// verifying a single token format.
+model PersonalAccessToken {
+  id         String    @id @default(uuid())
+  userId     String
+  name       String
+  /// SHA-256 of the token. The token itself is high-entropy and verified on
+  /// every exchange, so a slow password hash would only add latency.
+  tokenHash  String    @unique
+  scopes     String[]
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, revokedAt])
+  @@map("personal_access_tokens")
 }
 
 model UserAuthProvider {

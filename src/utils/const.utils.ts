@@ -25,3 +25,30 @@ export const OTP_LENGTH = 6;
 export const OTP_ATTEMPTS = 3;
 
 export const TEMP_TOKEN_LENGTH = 12;
+
+//= Personal Access Tokens (non-browser clients, e.g. the MCP gateway)
+
+export const PAT_PREFIX = 'aur_pat_';
+export const PAT_BYTES = 32;
+
+//~ The exchanged JWT is deliberately short-lived: the PAT is the durable
+//~ credential, so a leaked access token expires long before it is useful.
+export const PAT_ACCESS_TOKEN_TTL_SECONDS = 300;
+
+//~ Scopes are checked by the MCP gateway, not by the BFF, which still only
+//~ verifies the signature. Keep in sync with the gateway's tool definitions.
+export const PAT_SCOPES = [
+  'wallet:read',
+  'wallet:write',
+  'transaction:read',
+  'transaction:write',
+  'budget:read',
+  'budget:write',
+  'investment:read',
+  'investment:write',
+  'analytics:read',
+  'profile:read',
+  'profile:write',
+] as const;
+
+export type PatScope = (typeof PAT_SCOPES)[number];
